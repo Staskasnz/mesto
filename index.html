@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./pages/index.css">
+    <script async src="/scrypt.js"></script>
+    <title>Mesto</title>
+</head>
+
+<body class="page">
+    <div class="page__container">
+        <header class="header">
+            <img src="./images/logo.svg" alt="Логотип" class="header__logo">
+            <div class="header__line"></div>
+        </header>
+        <section class="profile">
+            <img src="./images/image.jpg" alt="Аватарка" class="profile__avatar">
+            <div class="profile__info">
+                <h1 class="profile__name">Жак-Ив Кусто</h1>
+                <div class="profile__edit-button">
+                    <img src="./images/pencil.svg" alt="Карандаш" class="profile__pencil">
+                </div>
+                <div class="line-break"></div>
+                <p class="profile__vocation">Исследователь океана</p>
+            </div>
+            <div class="profile__add-button">
+                <img src="./images/plus.svg" alt="Плюс" class="profile__plus">
+            </div>
+        </section>
+        <section class="photo-grid">
+            <div class="photo-grid__element">
+                <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Карачаевск</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+            <div class="photo-grid__element">
+                <img src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Эльбрус" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Гора Эльбрус</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+            <div class="photo-grid__element">
+                <img src="./images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Домбай</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+            <div class="photo-grid__element">
+                <img src="./images/kirill-pershin-1404681-unsplash.jpg" alt="Гора Эльбрус" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Гора Эльбрус</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+            <div class="photo-grid__element">
+                <img src="/images/kirill-pershin-1556355-unsplash.jpg" alt="Домбай" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Домбай</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+            <div class="photo-grid__element">
+                <img src="./images/kirill-pershin-1088404-unsplash.jpg" alt="Карачаевск" class="photo-grid__photo">
+                <div class="photo-grid__blok">
+                    <h2 class="photo-grid__title">Карачаево-Черкесия</h2>
+                    <div class="photo-grid__like"></div>
+                </div>
+            </div>
+        </section>
+        <footer class="footer">
+            <p class="footer__copyright">© 2020 Mesto Russia</p>
+        </footer>
+        <div class="popup">
+            <div class="popup__container">
+                <h3 class="popup__title">Редактировать профиль</h3>
+                <form class="popup__form">
+                    <input type="text" class="input popup__input-name">
+                    <input type="text" class="input popup__input-vocation">
+                    <button class="popup__save-button" type="submit">Сохранить</button>
+                </form>
+                <img src="./images/CloseIcon.svg" alt="Крестик" class="popup__close-button">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

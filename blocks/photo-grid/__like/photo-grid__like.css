@@ -1,0 +1,23 @@
+.photo-grid__like {
+    background-image: url(../../../images/like.svg);
+    min-width: 22px;
+    height: 19px;
+    margin-top: -5px;
+    margin-right: 21px;
+    align-self: center;
+}
+
+.photo-grid__like:hover {
+    opacity: .5;
+}
+
+.photo-grid__like:active {
+    opacity: 1;
+    background-image: url(../../../images/black__like.svg);
+}
+
+@media screen and (max-width:320px) {
+    .photo-grid__like {
+        margin-top: 0px;
+    }
+}
