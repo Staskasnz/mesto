@@ -1,9 +1,0 @@
-.popup__input-vocation{
-    width: 358px;
-}
-
-@media screen and (max-width:600px) {
-    .popup__input-vocation {
-        width: 100%;
-    }
-}

@@ -1,4 +1,4 @@
 .photo-grid__photo {
     min-width: 282px;
-    min-height: 282px;
+    aspect-ratio: 1/1;
 }

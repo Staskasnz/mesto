@@ -5,6 +5,7 @@
     margin-top: -5px;
     margin-right: 21px;
     align-self: center;
+    border: none;
 }
 
 .photo-grid__like:hover {
