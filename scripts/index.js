@@ -1,9 +1,9 @@
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
-const popupEdit = document.querySelector('.popup__edit');
-const popupAdd = document.querySelector('.popup__add');
-const editFormcCloseButton = document.querySelector('.edit-form__close-button');
-const addFormCloseButton = document.querySelector('.add-form__close-button');
+const popupEdit = document.querySelector('.popup_edit');
+const popupAdd = document.querySelector('.popup_add');
+const editFormcCloseButton = document.querySelector('.popup__close-button_edit-form');
+const addFormCloseButton = document.querySelector('.popup__close-button_add-form');
 const inputName = document.querySelector('.popup__input_type_name');
 const inputVocation = document.querySelector('.popup__input_type_vocation');
 const inputTitle = document.querySelector('.popup__input_type_title');
@@ -83,9 +83,11 @@ function popupOpen(evt) {
 }
 
 function popupClose(evt) {
-    if (evt.target.className.includes('edit-form__close-button') || evt.target.className.includes('popup__edit-form')) {
+    if (evt.target.className.includes('popup__close-button_edit-form') || evt.target.className.includes('popup__edit-form')) {
+        console.log(evt.target.className);
         popupEdit.classList.remove('popup_opened');
-    } else if (evt.target.className.includes('add-form__close-button') || evt.target.className.includes('popup__add-form')){
+    } else if (evt.target.className.includes('popup__close-button_add-form') || evt.target.className.includes('popup__add-form')){
+        console.log(evt.target.className);
         popupAdd.classList.remove('popup_opened');
     } else {
         fullImage.classList.remove('popup_opened');
