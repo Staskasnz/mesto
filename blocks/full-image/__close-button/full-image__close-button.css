@@ -1,0 +1,26 @@
+.full-image__close-button{
+    cursor: pointer;
+    background-image: url(../../../images/CloseIcon.svg);
+    border: none;
+    background-color: transparent;
+    width: 32px;
+    aspect-ratio: 1/1;
+    margin-bottom: 8px;
+    margin-right: -40px;
+    align-self: flex-end;
+}
+
+.full-image__close-button:hover {
+    opacity: 0.6;
+    transition: .2s;
+}
+
+
+@media screen and (max-width:600px) {
+    .full-image__close-button {
+        background-size: cover;
+        max-width: 22px;
+        margin-bottom: 16px;
+        margin-right: 0;
+    }
+}

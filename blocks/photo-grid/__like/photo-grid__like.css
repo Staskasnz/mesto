@@ -7,15 +7,11 @@
     align-self: center;
     border: none;
     background-color: white;
+    cursor: pointer;
 }
 
 .photo-grid__like:hover {
     opacity: .5;
-}
-
-.photo-grid__like:active {
-    opacity: 1;
-    background-image: url(../../../images/black__like.svg);
 }
 
 @media screen and (max-width:320px) {
