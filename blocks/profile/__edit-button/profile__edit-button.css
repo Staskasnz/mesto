@@ -8,6 +8,10 @@
     background-color: black;
     align-self: start;
     margin-top: 15px;
+    background-image: url(../../../images/pencil.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: .2s;
 }
 
 .profile__edit-button:hover {
@@ -23,6 +27,6 @@
         min-height: 18px;
         align-self: center;
         margin-right: 7px;
-        margin-bottom: 8px;
+        margin-bottom: 1px;
     }
 }

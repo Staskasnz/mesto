@@ -8,6 +8,10 @@
     background-color: black;
     border-radius: 2px;
     margin-left: auto;
+    background-image: url(../../../images/plus.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: .2s;
 }
 
 .profile__add-button:hover {
