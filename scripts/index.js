@@ -58,7 +58,6 @@ function createPhotoGridElement(name, link) {
         popupImageTitle.textContent = evt.path[1].children[2].children[0].textContent;
         popupOpen(popupFullImage);
     });
-
     return photoGridElement;
 }
 
@@ -72,14 +71,6 @@ function popupClose(popup) {
 
 function popupSave(evt) {
     evt.preventDefault();
-    if (evt.target.className.includes('popup__edit-form')) {
-        profileName.textContent = inputName.value;
-        profileVocation.textContent = inputVocation.value;
-    } else {
-        photoGridElement = createPhotoGridElement(inputTitle.value, inputLink.value);
-        photoGrid.prepend(photoGridElement);
-    }
-    popupClose(evt);
 }
 
 function like(evt) {
@@ -96,7 +87,7 @@ editButton.addEventListener('click', () => {
     inputVocation.value = profileVocation.textContent;
 });
 
-addButton.addEventListener('click', (evt) => {
+addButton.addEventListener('click', () => {
     popupOpen(popupAdd);
     inputTitle.value = '';
     inputLink.value = '';
@@ -105,8 +96,19 @@ addButton.addEventListener('click', (evt) => {
 buttonCloseEditPopup.addEventListener('click', () => { popupClose(popupEdit); });
 buttonCloseAddPopup.addEventListener('click', () => { popupClose(popupAdd); });
 buttonCloseFullImagePopup.addEventListener('click', () => { popupClose(popupFullImage); });
-popupEditForm.addEventListener('submit', popupSave);
-popupAddForm.addEventListener('submit', popupSave);
+popupEditForm.addEventListener('submit', (evt) => {
+    popupSave(evt);
+    profileName.textContent = inputName.value;
+    profileVocation.textContent = inputVocation.value;
+    popupClose(popupEdit);
+});
+
+popupAddForm.addEventListener('submit', (evt) => {
+    popupSave(evt);
+    photoGridElement = createPhotoGridElement(inputTitle.value, inputLink.value);
+    photoGrid.prepend(photoGridElement);
+    popupClose(popupAdd);
+});
 
 initialCards.forEach((item) => {
     photoGridElement = createPhotoGridElement(item.name, item.link)
