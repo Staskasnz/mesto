@@ -50,12 +50,14 @@ function createPhotoGridElement(name, link) {
     const photoGridElement = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
     const photoGridPhoto = photoGridElement.querySelector('.photo-grid__photo');
     photoGridElement.querySelector('.photo-grid__title').textContent = name;
+    photoGridPhoto.alt = name;
     photoGridPhoto.src = link;
     photoGridElement.querySelector('.photo-grid__like').addEventListener('click', like);
     photoGridElement.querySelector('.photo-grid__delete-button').addEventListener('click', deleteElement);
-    photoGridPhoto.addEventListener('click', (evt) => {
-        popupImage.src = evt.target.src;
-        popupImageTitle.textContent = evt.path[1].children[2].children[0].textContent;
+    photoGridPhoto.addEventListener('click', () => {
+        popupImage.src = link;
+        popupImageTitle.textContent = name;
+        popupImage.alt = name;
         popupOpen(popupFullImage);
     });
     return photoGridElement;
