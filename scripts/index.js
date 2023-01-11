@@ -1,3 +1,14 @@
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    buttonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__inactive-button',
+    redBorderClass: 'popup__input_red-broder'
+}
+
+const popupOverlayEdit = document.querySelector('.popup__overlay_edit');
+const popupOverlayAdd = document.querySelector('.popup__overlay_add');
+const popupOverlayFullImage = document.querySelector('.popup__overlay_full-image');
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const popupEdit = document.querySelector('.popup_edit');
@@ -65,10 +76,12 @@ function createPhotoGridElement(name, link) {
 
 function popupOpen(popup) {
     popup.classList.add('popup_opened');
+    enableValidation(validationConfig);
 }
 
 function popupClose(popup) {
     popup.classList.remove('popup_opened');
+    disableValidation(validationConfig);
 }
 
 function popupSave(evt) {
@@ -95,6 +108,16 @@ addButton.addEventListener('click', () => {
     inputLink.value = '';
 });
 
+document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape'){
+        popupClose(popupAdd);
+        popupClose(popupEdit);
+        popupClose(popupFullImage);
+    }
+});
+popupOverlayAdd.addEventListener('click', () => {popupClose(popupAdd)});
+popupOverlayEdit.addEventListener('click', () => {popupClose(popupEdit)});
+popupOverlayFullImage.addEventListener('click', () => {popupClose(popupFullImage)});
 buttonCloseEditPopup.addEventListener('click', () => { popupClose(popupEdit); });
 buttonCloseAddPopup.addEventListener('click', () => { popupClose(popupAdd); });
 buttonCloseFullImagePopup.addEventListener('click', () => { popupClose(popupFullImage); });
@@ -113,6 +136,6 @@ popupAddForm.addEventListener('submit', (evt) => {
 });
 
 initialCards.forEach((item) => {
-    photoGridElement = createPhotoGridElement(item.name, item.link)
+    photoGridElement = createPhotoGridElement(item.name, item.link);
     photoGrid.append(photoGridElement);
 });
