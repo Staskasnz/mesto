@@ -22,9 +22,6 @@ const buttonCloseFullImagePopup = document.querySelector('.popup__close-button_f
 const popupImageTitle = document.querySelector('.popup__img-title');
 const photoGridTemplate = document.querySelector('#photo-grid__element').content;
 
-inputName.value = profileName.textContent;
-inputVocation.value = profileVocation.textContent;
-
 const initialCards = [
     {
         name: 'Архыз',
