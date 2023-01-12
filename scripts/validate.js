@@ -1,3 +1,11 @@
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    buttonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__inactive-button',
+    redBorderClass: 'popup__input_red-broder'
+}
+
 function hideInputError(formElement, inputElement, config) {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
     errorElement.textContent = '';
@@ -20,16 +28,24 @@ function checkInputValidity(formElement, inputElement, config) {
 
 function hasInvalidInput(inputList) {
     return inputList.some((inputElement) => !inputElement.validity.valid);
-  }
+}
 
-function toggleButtonState(inputList, buttonElement, config){
-if(hasInvalidInput(inputList)){
+function disableSubmitButton(buttonElement, config) {
     buttonElement.classList.add(config.inactiveButtonClass);
     buttonElement.disabled = true;
-} else {
+}
+
+function enableSubmitButton(buttonElement, config) {
     buttonElement.classList.remove(config.inactiveButtonClass);
     buttonElement.disabled = false;
 }
+
+function toggleButtonState(inputList, buttonElement, config) {
+    if (hasInvalidInput(inputList)) {
+        disableSubmitButton(buttonElement, config);
+    } else {
+        enableSubmitButton(buttonElement, config);
+    }
 }
 
 function setEventListeners(formElement, config) {
@@ -51,15 +67,14 @@ function enableValidation(config) {
     });
 }
 
-function disableValidation(config) {
-    const formList = Array.from(document.querySelectorAll(config.formSelector));          //составляем массив форм
-    formList.forEach((formElement) => {
-        const inputList = Array.from(formElement.querySelectorAll(config.inputSelector)); //составляем массив инпутов
-        const buttonElement = formElement.querySelector(config.buttonSelector);
-        buttonElement.classList.remove(config.inactiveButtonClass);                       //убираем класс неактивной кнопки в форме
-        buttonElement.disabled = false;                                                   //убираем атрибут дизейбл в форме
-        inputList.forEach((inputElement) => {                                             //идем по импутам в форме                      
-            hideInputError(formElement, inputElement, config);                            //убираем все ошибки инпутов
-        });
+function checkErrors(element) {
+    const inputList = Array.from(element.querySelectorAll(validationConfig.inputSelector));
+    const inputsErrorState = Array.from(element.querySelectorAll(validationConfig.inputSelector));
+    const buttonElement = element.querySelector(validationConfig.buttonSelector);
+    inputsErrorState.forEach((input) => {
+        toggleButtonState(inputList, buttonElement, validationConfig);
+        checkInputValidity(element, input, validationConfig);
     });
-}
+};
+
+

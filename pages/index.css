@@ -33,10 +33,9 @@
 @import url(../blocks/popup/__close-button/popup__close-button.css);
 @import url(../blocks/popup/__form/popup__form.css);
 @import url(../blocks/popup/__img/popup__img.css);
-@import url(../blocks/popup/__img/popup__img.css);
 @import url(../blocks/popup/__box/popup__box.css);
 @import url(../blocks/popup/__img-title/popup__img-title.css);
 @import url(../blocks/popup/__input-error/popup__input-error.css);
 @import url(../blocks/popup/__input/_red-border/popup__input_red-broder.css);
 @import url(../blocks/popup/__overlay/popup__overlay.css);
-
+@import url(../blocks/popup/_full-image/popup_full-image.css);

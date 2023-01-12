@@ -1,11 +1,3 @@
-const validationConfig = {
-    formSelector: '.popup__form',
-    inputSelector: '.popup__input',
-    buttonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__inactive-button',
-    redBorderClass: 'popup__input_red-broder'
-}
-
 const popupOverlayEdit = document.querySelector('.popup__overlay_edit');
 const popupOverlayAdd = document.querySelector('.popup__overlay_add');
 const popupOverlayFullImage = document.querySelector('.popup__overlay_full-image');
@@ -29,6 +21,9 @@ const popupImage = document.querySelector('.popup__img');
 const buttonCloseFullImagePopup = document.querySelector('.popup__close-button_full-image');
 const popupImageTitle = document.querySelector('.popup__img-title');
 const photoGridTemplate = document.querySelector('#photo-grid__element').content;
+
+inputName.value = profileName.textContent;
+inputVocation.value = profileVocation.textContent;
 
 const initialCards = [
     {
@@ -63,32 +58,34 @@ function createPhotoGridElement(name, link) {
     photoGridElement.querySelector('.photo-grid__title').textContent = name;
     photoGridPhoto.alt = name;
     photoGridPhoto.src = link;
-    photoGridElement.querySelector('.photo-grid__like').addEventListener('click', like);
+    photoGridElement.querySelector('.photo-grid__like').addEventListener('click', putlLike);
     photoGridElement.querySelector('.photo-grid__delete-button').addEventListener('click', deleteElement);
     photoGridPhoto.addEventListener('click', () => {
         popupImage.src = link;
         popupImageTitle.textContent = name;
         popupImage.alt = name;
-        popupOpen(popupFullImage);
+        openPopup(popupFullImage);
     });
     return photoGridElement;
 }
 
-function popupOpen(popup) {
+function clickEscape(evt) {
+    if (evt.key === 'Escape') {
+        closePopup(document.querySelector('.popup_opened'));
+    }
+}
+
+function openPopup(popup) {
     popup.classList.add('popup_opened');
-    enableValidation(validationConfig);
+    document.addEventListener('keydown', clickEscape);
 }
 
-function popupClose(popup) {
+function closePopup(popup) {
     popup.classList.remove('popup_opened');
-    disableValidation(validationConfig);
+    document.removeEventListener('keydown', clickEscape);
 }
 
-function popupSave(evt) {
-    evt.preventDefault();
-}
-
-function like(evt) {
+function putlLike(evt) {
     evt.target.classList.toggle('photo-grid__like_active');
 }
 
@@ -96,46 +93,45 @@ function deleteElement(evt) {
     evt.target.closest('.photo-grid__element').remove();
 }
 
-editButton.addEventListener('click', () => {
-    popupOpen(popupEdit);
+editButton.addEventListener('click', (evt) => {
     inputName.value = profileName.textContent;
     inputVocation.value = profileVocation.textContent;
+    checkErrors(popupEditForm);
+    openPopup(popupEdit);
 });
 
 addButton.addEventListener('click', () => {
-    popupOpen(popupAdd);
-    inputTitle.value = '';
-    inputLink.value = '';
+    popupAddForm.reset();
+    checkErrors(popupAddForm);
+    openPopup(popupAdd);
 });
 
-document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape'){
-        popupClose(popupAdd);
-        popupClose(popupEdit);
-        popupClose(popupFullImage);
-    }
-});
-popupOverlayAdd.addEventListener('click', () => {popupClose(popupAdd)});
-popupOverlayEdit.addEventListener('click', () => {popupClose(popupEdit)});
-popupOverlayFullImage.addEventListener('click', () => {popupClose(popupFullImage)});
-buttonCloseEditPopup.addEventListener('click', () => { popupClose(popupEdit); });
-buttonCloseAddPopup.addEventListener('click', () => { popupClose(popupAdd); });
-buttonCloseFullImagePopup.addEventListener('click', () => { popupClose(popupFullImage); });
+popupOverlayAdd.addEventListener('click', () => { closePopup(popupAdd); });
+popupOverlayEdit.addEventListener('click', () => { closePopup(popupEdit); });
+popupOverlayFullImage.addEventListener('click', () => { closePopup(popupFullImage); });
+buttonCloseEditPopup.addEventListener('click', () => { closePopup(popupEdit); });
+buttonCloseAddPopup.addEventListener('click', () => { closePopup(popupAdd); });
+buttonCloseFullImagePopup.addEventListener('click', () => { closePopup(popupFullImage); });
+
 popupEditForm.addEventListener('submit', (evt) => {
-    popupSave(evt);
+    evt.preventDefault();
     profileName.textContent = inputName.value;
     profileVocation.textContent = inputVocation.value;
-    popupClose(popupEdit);
+    closePopup(popupEdit);
 });
 
 popupAddForm.addEventListener('submit', (evt) => {
-    popupSave(evt);
+    evt.preventDefault();
+    evt.submitter.disabled = true;
+    evt.submitter.classList.add('popup__inactive-button');
     photoGridElement = createPhotoGridElement(inputTitle.value, inputLink.value);
     photoGrid.prepend(photoGridElement);
-    popupClose(popupAdd);
+    closePopup(popupAdd);
 });
 
 initialCards.forEach((item) => {
     photoGridElement = createPhotoGridElement(item.name, item.link);
     photoGrid.append(photoGridElement);
 });
+
+enableValidation(validationConfig);
