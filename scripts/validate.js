@@ -71,9 +71,9 @@ function checkErrors(element) {
     const inputList = Array.from(element.querySelectorAll(validationConfig.inputSelector));
     const inputsErrorState = Array.from(element.querySelectorAll(validationConfig.inputSelector));
     const buttonElement = element.querySelector(validationConfig.buttonSelector);
+    toggleButtonState(inputList, buttonElement, validationConfig);
     inputsErrorState.forEach((input) => {
-        toggleButtonState(inputList, buttonElement, validationConfig);
-        checkInputValidity(element, input, validationConfig);
+        hideInputError(element, input, validationConfig);
     });
 };
 
