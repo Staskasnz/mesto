@@ -1,3 +1,6 @@
+import Card from "./Card.js";
+import FormValidator from "./FormValidator.js";
+
 const popupOverlayEdit = document.querySelector('.popup__overlay_edit');
 const popupOverlayAdd = document.querySelector('.popup__overlay_add');
 const popupOverlayFullImage = document.querySelector('.popup__overlay_full-image');
@@ -17,10 +20,15 @@ const popupEditForm = document.querySelector('.popup__edit-form');
 const popupAddForm = document.querySelector('.popup__add-form');
 const photoGrid = document.querySelector('.photo-grid');
 const popupFullImage = document.querySelector('.popup_full-image');
-const popupImage = document.querySelector('.popup__img');
 const buttonCloseFullImagePopup = document.querySelector('.popup__close-button_full-image');
-const popupImageTitle = document.querySelector('.popup__img-title');
-const photoGridTemplate = document.querySelector('#photo-grid__element').content;
+
+const validationConfig = {
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    buttonSelector: '.popup__save-button',
+    inactiveButtonClass: 'popup__inactive-button',
+    redBorderClass: 'popup__input_red-broder'
+}
 
 const initialCards = [
     {
@@ -49,22 +57,8 @@ const initialCards = [
     }
 ];
 
-function createPhotoGridElement(name, link) {
-    const photoGridElement = photoGridTemplate.querySelector('.photo-grid__element').cloneNode(true);
-    const photoGridPhoto = photoGridElement.querySelector('.photo-grid__photo');
-    photoGridElement.querySelector('.photo-grid__title').textContent = name;
-    photoGridPhoto.alt = name;
-    photoGridPhoto.src = link;
-    photoGridElement.querySelector('.photo-grid__like').addEventListener('click', putlLike);
-    photoGridElement.querySelector('.photo-grid__delete-button').addEventListener('click', deleteElement);
-    photoGridPhoto.addEventListener('click', () => {
-        popupImage.src = link;
-        popupImageTitle.textContent = name;
-        popupImage.alt = name;
-        openPopup(popupFullImage);
-    });
-    return photoGridElement;
-}
+const validationAddForm = new FormValidator(validationConfig, popupAddForm);
+const validationEditForm = new FormValidator(validationConfig, popupEditForm);
 
 function clickEscape(evt) {
     if (evt.key === 'Escape') {
@@ -82,24 +76,16 @@ function closePopup(popup) {
     document.removeEventListener('keydown', clickEscape);
 }
 
-function putlLike(evt) {
-    evt.target.classList.toggle('photo-grid__like_active');
-}
-
-function deleteElement(evt) {
-    evt.target.closest('.photo-grid__element').remove();
-}
-
-editButton.addEventListener('click', (evt) => {
+editButton.addEventListener('click', () => {
     inputName.value = profileName.textContent;
     inputVocation.value = profileVocation.textContent;
-    checkErrors(popupEditForm);
+    validationEditForm.checkErrors();
     openPopup(popupEdit);
 });
 
 addButton.addEventListener('click', () => {
     popupAddForm.reset();
-    checkErrors(popupAddForm);
+    validationAddForm.checkErrors();
     openPopup(popupAdd);
 });
 
@@ -121,14 +107,15 @@ popupAddForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     evt.submitter.disabled = true;
     evt.submitter.classList.add('popup__inactive-button');
-    photoGridElement = createPhotoGridElement(inputTitle.value, inputLink.value);
-    photoGrid.prepend(photoGridElement);
+    const photoGridElement = new Card(inputTitle.value, inputLink.value, openPopup);
+    photoGrid.prepend(photoGridElement.getView());
     closePopup(popupAdd);
 });
 
 initialCards.forEach((item) => {
-    photoGridElement = createPhotoGridElement(item.name, item.link);
-    photoGrid.append(photoGridElement);
+    const card = new Card(item.name, item.link, openPopup);
+    photoGrid.append(card.getView());
 });
 
-enableValidation(validationConfig);
+validationAddForm.enableValidation();
+validationEditForm.enableValidation();
