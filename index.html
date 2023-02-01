@@ -20,22 +20,20 @@
                 <img src="./images/image.jpg" alt="Аватарка" class="profile__avatar">
                 <div class="profile__info">
                     <h1 class="profile__name">Жак-Ив Кусто</h1>
-                    <button class="profile__edit-button" type="button">
-                    </button>
+                    <button aria-label="Редактировать" class="profile__edit-button" type="button"></button>
                     <div class="line-break"></div>
                     <p class="profile__vocation">Исследователь океана</p>
                 </div>
-                <button class="profile__add-button" type="button">
-                </button>
+                <button aria-label="Добавить" class="profile__add-button" type="button"></button>
             </section>
             <section class="photo-grid">
                 <template id="photo-grid__element">
                     <div class="photo-grid__element">
-                        <button class="photo-grid__delete-button" type="button"></button>
+                        <button aria-label="Удалить" class="photo-grid__delete-button" type="button"></button>
                         <img class="photo-grid__photo">
                         <div class="photo-grid__blok">
                             <h2 class="photo-grid__title"></h2>
-                            <button class="photo-grid__like" type="button"></button>
+                            <button aria-label="Поставить лайк" class="photo-grid__like" type="button"></button>
                         </div>
                     </div>
                 </template>
@@ -52,10 +50,10 @@
                 <div class="popup__container">
                     <h3 class="popup__title">Редактировать профиль</h3>
                     <form class="popup__form popup__edit-form" name="popupForm" novalidate>
-                        <input type="text" id="name" class="popup__input popup__input_type_name" minlength="2"
+                        <input type="text" id="name" placeholder="Имя" class="popup__input popup__input_type_name" minlength="2"
                             maxlength="40" required>
                         <span class="name-error popup__input-error"></span>
-                        <input type="text" id="vocation" class="popup__input popup__input_type_vocation" minlength="3"
+                        <input type="text" id="vocation" placeholder="О себе" class="popup__input popup__input_type_vocation" minlength="2"
                             maxlength="200" required>
                         <span class="vocation-error popup__input-error"></span>
                         <button class="popup__save-button" type="submit">Сохранить</button>
@@ -72,7 +70,7 @@
                     <h3 class="popup__title">Новое место</h3>
                     <form class="popup__form popup__add-form" name="popupForm" novalidate>
                         <input type="text" id="title" class="popup__input popup__input_type_title"
-                            placeholder="Название" minlength="2" maxlength="40" required>
+                            placeholder="Название" minlength="2" maxlength="30" required>
                         <span class="title-error popup__input-error"></span>
                         <input type="url" id="link" class="popup__input popup__input_type_link"
                             placeholder="Ссылка на картинку" required>
@@ -83,6 +81,7 @@
             </div>
         </div>
         <div class="popup popup_full-image">
+            <!-- немного не понятно здесь, popup_full-image у меня черный с прозрачностью 0.9, альт виден и кнопка закрытия -->
             <div class="popup__overlay popup__overlay_full-image"></div>
             <div class="popup__box">
                 <button class="popup__close-button popup__close-button_full-image" aria-label="Кнопка закрытия попапа"
@@ -93,8 +92,6 @@
         </div>
     </div>
     <script type="module" src="./scripts/index.js"></script>
-    <script type="module" src="./scripts/Card.js"></script>
-    <script type="module" src="./scripts/FormValidator.js"></script>
 </body>
 
 </html>
