@@ -24,7 +24,6 @@ const popupImage = document.querySelector('.popup__img');
 const popupImageTitle = document.querySelector('.popup__img-title');
 const popupFullImage = document.querySelector('.popup_full-image');
 const buttonCloseFullImagePopup = document.querySelector('.popup__close-button_full-image');
-const photoGridTemplate = document.querySelector('#photo-grid__element').content;
 
 const validationAddForm = new FormValidator(validationConfig, popupAddForm);
 const validationEditForm = new FormValidator(validationConfig, popupEditForm);
@@ -53,7 +52,7 @@ function closePopup(popup) {
 }
 
 function createCard(name, link) {
-    const card = new Card(name, link, openFullImagePopup, photoGridTemplate);
+    const card = new Card(name, link, openFullImagePopup, '#photo-grid__element');
     
     return card;
 }
@@ -87,7 +86,6 @@ popupEditForm.addEventListener('submit', (evt) => {
 
 popupAddForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-    evt.submitter.disabled = true;
     const card = createCard(inputTitle.value, inputLink.value);
     photoGrid.prepend(card.getView());
     closePopup(popupAdd);
