@@ -59,17 +59,12 @@ class FormValidator {
     }
 
     enableValidation() {
-        const formList = Array.from(document.querySelectorAll(this._config.formSelector));
-        formList.forEach(() => {
-            this._setEventListeners();
-        });
+        this._setEventListeners();
     }
 
     clearErrors() {
-        const inputList = Array.from(this._formElement.querySelectorAll(this._config.inputSelector));
-        const buttonElement = this._formElement.querySelector(this._config.buttonSelector);
-        this._toggleButtonState(inputList, buttonElement);
-        inputList.forEach((input) => {
+        this._toggleButtonState();
+        this._inputList.forEach((input) => {
             this._hideInputError(input);
         });
     };
