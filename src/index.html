@@ -5,19 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./pages/index.css">
     <title>Mesto</title>
 </head>
 
 <body class="page">
     <div class="page__container">
         <header class="header">
-            <img src="./images/logo.svg" alt="Логотип" class="header__logo">
+            <img src="<%=require('./images/logo.svg')%>" alt="Логотип" class="header__logo">
             <div class="header__line"></div>
         </header>
         <main class="content">
             <section class="profile">
-                <img src="./images/image.jpg" alt="Аватарка" class="profile__avatar">
+                <img src="<%=require('./images/image.jpg')%>" alt="Аватарка" class="profile__avatar">
                 <div class="profile__info">
                     <h1 class="profile__name">Жак-Ив Кусто</h1>
                     <button aria-label="Редактировать" class="profile__edit-button" type="button"></button>
@@ -40,21 +39,21 @@
             </section>
         </main>
         <footer class="footer">
-            <p class="footer__copyright">© 2020 Mesto Russia</p>
+            <p class="footer__copyright">© 2023 Mesto Russia</p>
         </footer>
         <div class="popup popup_edit">
-            <div class="popup__overlay popup__overlay_edit"></div>
+            <div class="popup__overlay"></div>
             <div class="popup__box">
-                <button class="popup__close-button popup__close-button_edit-form" aria-label="Кнопка закрытия попапа"
+                <button class="popup__close-button" aria-label="Кнопка закрытия попапа"
                     type="button"></button>
                 <div class="popup__container">
                     <h3 class="popup__title">Редактировать профиль</h3>
                     <form class="popup__form popup__edit-form" name="popupForm" novalidate>
-                        <input type="text" id="name" placeholder="Имя" class="popup__input popup__input_type_name"
+                        <input type="text" id="name" placeholder="Имя" class="popup__input"
                             minlength="2" maxlength="40" required>
                         <span class="name-error popup__input-error"></span>
                         <input type="text" id="vocation" placeholder="О себе"
-                            class="popup__input popup__input_type_vocation" minlength="2" maxlength="200" required>
+                            class="popup__input" minlength="2" maxlength="200" required>
                         <span class="vocation-error popup__input-error"></span>
                         <button class="popup__save-button" type="submit">Сохранить</button>
                     </form>
@@ -62,9 +61,9 @@
             </div>
         </div>
         <div class="popup popup_add">
-            <div class="popup__overlay popup__overlay_add"></div>
+            <div class="popup__overlay"></div>
             <div class="popup__box">
-                <button class="popup__close-button popup__close-button_add-form" aria-label="Кнопка закрытия попапа"
+                <button class="popup__close-button" aria-label="Кнопка закрытия попапа"
                     type="button"></button>
                 <div class="popup__container">
                     <h3 class="popup__title">Новое место</h3>
@@ -81,16 +80,15 @@
             </div>
         </div>
         <div class="popup popup_full-image">
-            <div class="popup__overlay popup__overlay_full-image"></div>
+            <div class="popup__overlay"></div>
             <div class="popup__box">
-                <button class="popup__close-button popup__close-button_full-image" aria-label="Кнопка закрытия попапа"
+                <button class="popup__close-button" aria-label="Кнопка закрытия попапа"
                     type="button"></button>
                 <img class="popup__img" src="#">
                 <p class="popup__img-title"></p>
             </div>
         </div>
     </div>
-    <script type="module" src="./scripts/index.js"></script>
 </body>
 
 </html>

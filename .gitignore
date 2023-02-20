@@ -1,0 +1,4 @@
+.dist
+.npmrc
+build
+node_modules
