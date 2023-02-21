@@ -4,14 +4,11 @@ import Section from "../components/Section.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
-import { validationConfig, initialCards } from "../components/constants.js";
+import { validationConfig, initialCards } from "../constants/constants.js";
 import './index.css';
 
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
-const selectorEditPopup = document.querySelector('.popup_edit');
-const selectorAddPopup = document.querySelector('.popup_add');
-const selectorFullImagePopup = document.querySelector('.popup_full-image');
 const inputTitle = document.querySelector('.popup__input_type_title');
 const inputLink = document.querySelector('.popup__input_type_link');
 const profileName = document.querySelector('.profile__name');
@@ -42,21 +39,22 @@ const userInfo = new UserInfo({
 
 const userObject = userInfo.getUserInfo();
 
-const popupEdit = new PopupWithForm(selectorEditPopup, () => {
-    handleSubmitEditPopup(userObject);
-});
+const popupEdit = new PopupWithForm('.popup_edit', handleSubmitPopupEdit);
 
-const popupAdd = new PopupWithForm(selectorAddPopup, () => {
-    const card = createCard(inputTitle.value, inputLink.value);
-    photoGrid.prepend(card.getView());
-});
+const popupAdd = new PopupWithForm('.popup_add', handleSubmitPopupAdd);
 
-const popupFullImage = new PopupWithImage(selectorFullImagePopup);
+const popupFullImage = new PopupWithImage('.popup_full-image');
 
-function handleSubmitEditPopup(userObject){
-    userObject.name = inputName.value;
-    userObject.vocation = inputVocation.value;
-    userInfo.setUserInfo(userObject);
+function handleSubmitPopupEdit(inputData) {
+    userObject.name = inputData.name;
+    userObject.vocation = inputData.vocation;
+    userInfo.setUserInfo(inputData);
+}
+
+
+function handleSubmitPopupAdd(inputData) {
+    const card = createCard(inputData.title, inputData.link);
+    photoGrid.prepend(card.getView())
 }
 
 function openFullImagePopup(name, link) {
@@ -69,9 +67,8 @@ function createCard(name, link) {
 }
 
 editButton.addEventListener('click', () => {
-    inputName.value = userObject.name;
+    inputName.value = userObject.name; //немного не понял сдесь коментарий, вначале написано что нужно вызывать getUserInfo каждый раз при открытии, а дальше что один раз нужно вызвать 
     inputVocation.value = userObject.vocation;
-    userInfo.setUserInfo(userObject);
     validationEditForm.clearErrors();
     popupEdit.open();
 });

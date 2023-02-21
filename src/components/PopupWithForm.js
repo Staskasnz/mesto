@@ -10,8 +10,8 @@ export default class PopupWithForm extends Popup {
 
     _getInputValues() {
         const values = {};
-        this._inputList.forEach((item) => {
-            values[item.name] = item.value;
+        this._inputList.forEach((item) => {    
+            values[item.id] = item.value;
         });
         return values;
     }
