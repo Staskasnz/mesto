@@ -37,8 +37,6 @@ const userInfo = new UserInfo({
     vocation: profileVocation
 });
 
-const userObject = userInfo.getUserInfo();
-
 const popupEdit = new PopupWithForm('.popup_edit', handleSubmitPopupEdit);
 
 const popupAdd = new PopupWithForm('.popup_add', handleSubmitPopupAdd);
@@ -46,15 +44,12 @@ const popupAdd = new PopupWithForm('.popup_add', handleSubmitPopupAdd);
 const popupFullImage = new PopupWithImage('.popup_full-image');
 
 function handleSubmitPopupEdit(inputData) {
-    userObject.name = inputData.name;
-    userObject.vocation = inputData.vocation;
     userInfo.setUserInfo(inputData);
 }
 
-
 function handleSubmitPopupAdd(inputData) {
     const card = createCard(inputData.title, inputData.link);
-    photoGrid.prepend(card.getView())
+    cardsGrid.addItem(card.getView())
 }
 
 function openFullImagePopup(name, link) {
@@ -67,7 +62,8 @@ function createCard(name, link) {
 }
 
 editButton.addEventListener('click', () => {
-    inputName.value = userObject.name; //немного не понял сдесь коментарий, вначале написано что нужно вызывать getUserInfo каждый раз при открытии, а дальше что один раз нужно вызвать 
+    const userObject = userInfo.getUserInfo();
+    inputName.value = userObject.name;
     inputVocation.value = userObject.vocation;
     validationEditForm.clearErrors();
     popupEdit.open();
