@@ -13,6 +13,6 @@ export default class UserInfo {
 
     setUserInfo(obj) {
         this._name.textContent = obj.name;
-        this._vocation.textContent = obj.vocation;
+        this._vocation.textContent = obj.about;
     }
 }
