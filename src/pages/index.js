@@ -12,8 +12,6 @@ import PopupWithButton from "../components/PopupWithButton.js";
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const avatar = document.querySelector('.profile__avatar-pencil');
-const profileName = document.querySelector('.profile__name');
-const profileVocation = document.querySelector('.profile__vocation');
 const popupEditForm = document.querySelector('.popup__edit-form');
 const popupAddForm = document.querySelector('.popup__add-form');
 const popupAvatarForm = document.querySelector('.popup__avatar-form');
@@ -29,105 +27,112 @@ const userApi = new Api(userInfoConfig);
 const cardsApi = new Api(cardsConfig);
 
 const userInfo = new UserInfo({
-    name: profileName,
-    vocation: profileVocation
+    nameSelector: '.profile__name',
+    vocationSelector: '.profile__vocation',
+    avatarSelector: '.profile__avatar'
 });
 
-let cardsGrid;
+let userId;
 
-cardsApi.getInfo()
-    .then((data) => {
-        cardsGrid = new Section({
-            items: data,
-            renderer: (item) => {
-                const card = createCard(item.name, item.link, item.likes, item._id, item.owner._id);
-                cardsGrid.addItem(card.getView());
-            },
-        },
-            '.photo-grid'
-        );
-        cardsGrid.renderItems();
-    }).catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-    });
+const cardsGrid = new Section({
+    renderer: (item) => {
+        const card = createCard(item.name, item.link, item.likes, item._id, item.owner._id, userId);
+        cardsGrid.addItem(card.getView());
+    },
+},
+    '.photo-grid'
+);
 
-
-userApi.getInfo()
-    .then((data) => {
-        userInfo.setUserInfo(data);
-        profileAvatar.src = data.avatar;
+Promise.all([ 
+    userApi.getInfo(),
+    cardsApi.getInfo()
+])
+    .then((values) => {
+        userId = values[0]._id;
+        userInfo.setUserInfo(values[0]);
+        cardsGrid.renderItems(values[1]);
     })
     .catch((err) => {
-        console.log(err); // выведем ошибку в консоль
-    });
+        console.log(err);
+    })
 
-const popupEdit = new PopupWithForm('.popup_edit', handleSubmitPopupEdit, renderLoading);
-const popupAdd = new PopupWithForm('.popup_add', handleSubmitPopupAdd, renderLoading);
-const popupSetAvatar = new PopupWithForm('.popup_avatar', handleSubmitPopupAvatar, renderLoading);
+const popupEdit = new PopupWithForm('.popup_edit', handleSubmitPopupEdit);
+const popupAdd = new PopupWithForm('.popup_add', handleSubmitPopupAdd);
+const popupSetAvatar = new PopupWithForm('.popup_avatar', handleSubmitPopupAvatar);
 const popupFullImage = new PopupWithImage('.popup_full-image');
 const popupDeleteCard = new PopupWithButton('.popup_delete', handleButton);
 
-function renderLoading(isLoading, popupForm) {
-    if (isLoading) {
-        popupForm.querySelector('.popup__save-button').textContent = 'Сохранение...';
-    } else {
-        popupForm.querySelector('.popup__save-button').textContent = 'Создать';
-    }
-}
-
-function handleSubmitPopupEdit(inputData, popupForm) {
+function handleSubmitPopupEdit(inputData) {
     userApi.saveInfo(inputData)
         .then((data) => {
             userInfo.setUserInfo(data);
+            popupEdit.close();
         })
         .catch((err) => {
             console.log(err); // выведем ошибку в консоль
         })
         .finally(() => {
-            renderLoading(false, popupForm);
-            popupEdit.close();
+            popupEdit.renderLoading(false, 'Сохранить');
         });
 }
 
-function handleSubmitPopupAdd(inputData, popupForm) {
+function handleSubmitPopupAdd(inputData) {
     cardsApi.createNewCard(inputData)
         .then((data) => {
-            const card = createCard(data.name, data.link, data.likes, data._id, data.owner._id);
-            cardsGrid.addItem(card.getView())
+            const card = createCard(data.name, data.link, data.likes, data._id, data.owner._id, userId);
+            cardsGrid.addItem(card.getView());
+            popupAdd.close();
         })
         .catch((err) => {
             console.log(err); // выведем ошибку в консоль
         })
         .finally(() => {
-            renderLoading(false, popupForm);
-            popupAdd.close();
+            popupAdd.renderLoading(false, 'Создать');
         });
 }
 
-function handleSubmitPopupAvatar(inputData, popupForm) {
+function handleSubmitPopupAvatar(inputData) {
     userApi.setAvatar(inputData)
         .then((data) => {
             profileAvatar.src = data.avatar;
+            popupSetAvatar.close();
         })
         .catch((err) => {
             console.log(err); // выведем ошибку в консоль
         })
         .finally(() => {
-            renderLoading(false, popupForm);
-            popupSetAvatar.close();
+            popupSetAvatar.renderLoading(false, 'Сохранить');
         });
 }
 
-function handleButton(cardId) {
-    cardsApi.deleteCard(cardId);
+function handleButton(cardId, card) {
+    cardsApi.deleteCard(cardId)
+        .then(() => card.remove())
+        .catch((err) => {
+            console.log(err); // выведем ошибку в консоль
+        });
 }
 
-function putLikeApi(cardId) {
-    return cardsApi.putLike(cardId);
+function putLikeApi(cardId, likesCount, like) {
+    cardsApi.putLike(cardId)
+        .then((data) => {
+            likesCount.textContent = data.likes.length;
+            like.classList.add('photo-grid__like_active');
+        })
+        .catch((err) => {
+            console.log(err); // выведем ошибку в консоль
+        });
 }
 
-function deleteLikeApi(cardId) {
-    return cardsApi.deleteLike(cardId);
+function deleteLikeApi(cardId, likesCount, like) {
+    cardsApi.deleteLike(cardId)
+        .then((data) => {
+            likesCount.textContent = data.likes.length;
+            like.classList.remove('photo-grid__like_active');
+        })
+        .catch((err) => {
+            console.log(err); // выведем ошибку в консоль
+        });
 }
 
 function openFullImagePopup(name, link) {
@@ -138,8 +143,8 @@ function openDeleteCardPopup(card, id) {
     popupDeleteCard.open(card, id);
 }
 
-function createCard(name, link, likes, id, ownerId) {
-    const card = new Card(name, link, likes, id, ownerId, openFullImagePopup, openDeleteCardPopup, putLikeApi, deleteLikeApi, '#photo-grid__element');
+function createCard(name, link, likes, id, ownerId, userId) {
+    const card = new Card(name, link, likes, id, ownerId, userId, openFullImagePopup, openDeleteCardPopup, putLikeApi, deleteLikeApi, '#photo-grid__element');
     return card;
 }
 
@@ -157,10 +162,9 @@ addButton.addEventListener('click', () => {
 });
 
 avatar.addEventListener('click', () => {
+    validationAvatarForm.clearErrors();
     popupSetAvatar.open();
 });
-
-
 
 popupAdd.setEventListeners();
 popupEdit.setEventListeners();

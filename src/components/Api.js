@@ -15,7 +15,7 @@ export default class Api {
         return fetch(this.url, {
             method: 'PATCH',
             headers: {
-                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79',
+                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79', //this.headers у меня содержит только токен, поэтому приходитя прописывать Content-type, в getInfo у меня стоит this.headers, тк ему не нужен ContentType
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({

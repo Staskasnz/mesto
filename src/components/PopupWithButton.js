@@ -13,8 +13,7 @@ export default class PopupWithButton extends Popup {
     }
 
     delete(){
-        this._handleButton(this._id);
-        this._card.remove();
+        this._handleButton(this._id, this._card);
     }
 
     setEventListeners() {

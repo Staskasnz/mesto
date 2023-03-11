@@ -1,5 +1,5 @@
 export default class Card {
-    constructor(title, link, likes, id, ownerId, openFullImagePopup, openDeleteCardPopup, putLikeApi, deleteLikeApi, templateSelector) {
+    constructor(title, link, likes, id, ownerId, userId, openFullImagePopup, openDeleteCardPopup, putLikeApi, deleteLikeApi, templateSelector) {
         this._title = title;
         this._link = link;
         this._likes = likes;
@@ -12,7 +12,7 @@ export default class Card {
         this._templateSelector = templateSelector;
         this._content = document.querySelector(this._templateSelector).content
             .querySelector(".photo-grid__element");
-        this._myId = '425d54141212510c853cf047';
+        this._myId = userId;
     }
 
     _getTemplateCard() {
@@ -21,23 +21,15 @@ export default class Card {
     }
 
     _putLike() {
-        this._putLikeApi(this._id)
-        .then((data) =>  this._likesCount.textContent = data.likes.length)
-        .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-        });
-
-        this._like.classList.add('photo-grid__like_active');
+        this._putLikeApi(this._id, this._likesCount, this._like);
     }
 
     _deleteLike() {
-        this._deleteLikeApi(this._id)
-        .then((data) =>  this._likesCount.textContent = data.likes.length)
-        .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-        });
+        this._deleteLikeApi(this._id, this._likesCount, this._like);
+    }
 
-        this._like.classList.remove('photo-grid__like_active');
+    deleteCard2() {
+        this._newCard.remove();
     }
 
     _setEventListeners() {
