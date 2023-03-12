@@ -6,6 +6,7 @@ export default class PopupWithForm extends Popup {
         this._submit = submit;
         this._popupForm = this._popup.querySelector('.popup__form');
         this._inputList = this._popupForm.querySelectorAll('.popup__input');
+        this._button = this._popupForm.querySelector('.popup__save-button');
     }
 
     _getInputValues() {
@@ -18,9 +19,9 @@ export default class PopupWithForm extends Popup {
 
     renderLoading(isLoading, message){
         if (isLoading) {
-            this._popupForm.querySelector('.popup__save-button').textContent = `${message}`;
+            this._button.textContent = `${message}`;
         } else {
-            this._popupForm.querySelector('.popup__save-button').textContent = `${message}`;
+            this._button.textContent = `${message}`;
         }
     }
 

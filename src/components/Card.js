@@ -20,16 +20,28 @@ export default class Card {
         return card;
     }
 
+    likeIsActive(){
+        this._like.classList.add('photo-grid__like_active');
+    }
+
+    likeIsInactive(){
+        this._like.classList.remove('photo-grid__like_active');
+    }
+
+    updateCountLikes(num){
+        this._likesCount.textContent = num;
+    }
+
+    removeCard(){
+        this._newCard.remove();
+    }
+
     _putLike() {
-        this._putLikeApi(this._id, this._likesCount, this._like);
+        this._putLikeApi(this._id, this);
     }
 
     _deleteLike() {
-        this._deleteLikeApi(this._id, this._likesCount, this._like);
-    }
-
-    deleteCard2() {
-        this._newCard.remove();
+        this._deleteLikeApi(this._id, this);
     }
 
     _setEventListeners() {
@@ -40,7 +52,7 @@ export default class Card {
                 this._putLike();
             }
         });
-        this._newCard.querySelector('.photo-grid__delete-button').addEventListener('click', () => this._openDeleteCardPopup(this._newCard, this._id));
+        this._newCard.querySelector('.photo-grid__delete-button').addEventListener('click', () => this._openDeleteCardPopup(this, this._id));
         this._img.addEventListener('click', () => this._openFullImagePopup(this._title, this._link));
     }
 

@@ -5,7 +5,7 @@ import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
 import Api from "../components/Api.js";
-import { validationConfig, userInfoConfig, cardsConfig } from "../constants/constants.js";
+import { validationConfig, apiInfoConfig} from "../constants/constants.js";
 import './index.css';
 import PopupWithButton from "../components/PopupWithButton.js";
 
@@ -17,14 +17,12 @@ const popupAddForm = document.querySelector('.popup__add-form');
 const popupAvatarForm = document.querySelector('.popup__avatar-form');
 const inputName = document.querySelector('#name');
 const inputVocation = document.querySelector('#vocation');
-const profileAvatar = document.querySelector('.profile__avatar');
 
 const validationAddForm = new FormValidator(validationConfig, popupAddForm);
 const validationEditForm = new FormValidator(validationConfig, popupEditForm);
 const validationAvatarForm = new FormValidator(validationConfig, popupAvatarForm);
 
-const userApi = new Api(userInfoConfig);
-const cardsApi = new Api(cardsConfig);
+const api = new Api(apiInfoConfig);
 
 const userInfo = new UserInfo({
     nameSelector: '.profile__name',
@@ -37,19 +35,20 @@ let userId;
 const cardsGrid = new Section({
     renderer: (item) => {
         const card = createCard(item.name, item.link, item.likes, item._id, item.owner._id, userId);
-        cardsGrid.addItem(card.getView());
+        cardsGrid.addItem(card);
     },
 },
     '.photo-grid'
 );
 
 Promise.all([ 
-    userApi.getInfo(),
-    cardsApi.getInfo()
+    api.getUserInfo(),
+    api.getCardInfo()
 ])
     .then((values) => {
         userId = values[0]._id;
         userInfo.setUserInfo(values[0]);
+        userInfo.setAvatar(values[0]);
         cardsGrid.renderItems(values[1]);
     })
     .catch((err) => {
@@ -63,7 +62,7 @@ const popupFullImage = new PopupWithImage('.popup_full-image');
 const popupDeleteCard = new PopupWithButton('.popup_delete', handleButton);
 
 function handleSubmitPopupEdit(inputData) {
-    userApi.saveInfo(inputData)
+    api.saveUserInfo(inputData)
         .then((data) => {
             userInfo.setUserInfo(data);
             popupEdit.close();
@@ -77,10 +76,10 @@ function handleSubmitPopupEdit(inputData) {
 }
 
 function handleSubmitPopupAdd(inputData) {
-    cardsApi.createNewCard(inputData)
+    api.createNewCard(inputData)
         .then((data) => {
             const card = createCard(data.name, data.link, data.likes, data._id, data.owner._id, userId);
-            cardsGrid.addItem(card.getView());
+            cardsGrid.addItem(card);
             popupAdd.close();
         })
         .catch((err) => {
@@ -92,9 +91,9 @@ function handleSubmitPopupAdd(inputData) {
 }
 
 function handleSubmitPopupAvatar(inputData) {
-    userApi.setAvatar(inputData)
+    api.setAvatar(inputData)
         .then((data) => {
-            profileAvatar.src = data.avatar;
+            userInfo.setAvatar(data);
             popupSetAvatar.close();
         })
         .catch((err) => {
@@ -106,29 +105,32 @@ function handleSubmitPopupAvatar(inputData) {
 }
 
 function handleButton(cardId, card) {
-    cardsApi.deleteCard(cardId)
-        .then(() => card.remove())
-        .catch((err) => {
-            console.log(err); // выведем ошибку в консоль
-        });
-}
-
-function putLikeApi(cardId, likesCount, like) {
-    cardsApi.putLike(cardId)
-        .then((data) => {
-            likesCount.textContent = data.likes.length;
-            like.classList.add('photo-grid__like_active');
+    api.deleteCard(cardId)
+        .then(() => {
+            popupDeleteCard.close();
+            card.removeCard();
         })
         .catch((err) => {
             console.log(err); // выведем ошибку в консоль
         });
 }
 
-function deleteLikeApi(cardId, likesCount, like) {
-    cardsApi.deleteLike(cardId)
+function putLikeApi(cardId, card) {
+    api.putLike(cardId)
         .then((data) => {
-            likesCount.textContent = data.likes.length;
-            like.classList.remove('photo-grid__like_active');
+            card.updateCountLikes(data.likes.length);
+            card.likeIsActive();
+        })
+        .catch((err) => {
+            console.log(err); // выведем ошибку в консоль
+        });
+}
+
+function deleteLikeApi(cardId, card) {
+    api.deleteLike(cardId)
+        .then((data) => {
+            card.updateCountLikes(data.likes.length);
+            card.likeIsInactive();
         })
         .catch((err) => {
             console.log(err); // выведем ошибку в консоль
@@ -145,7 +147,7 @@ function openDeleteCardPopup(card, id) {
 
 function createCard(name, link, likes, id, ownerId, userId) {
     const card = new Card(name, link, likes, id, ownerId, userId, openFullImagePopup, openDeleteCardPopup, putLikeApi, deleteLikeApi, '#photo-grid__element');
-    return card;
+    return card.getView();
 }
 
 editButton.addEventListener('click', () => {

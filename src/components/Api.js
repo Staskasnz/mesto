@@ -4,18 +4,27 @@ export default class Api {
         this.headers = config.headers;
     }
 
-    getInfo() {
-        return fetch(this.url, {
+    getUserInfo() {
+        return fetch(`${this.url}/users/me`, {
             headers: this.headers
         })
             .then(handleResponse)
     }
+    
 
-    saveInfo(data) {
-        return fetch(this.url, {
+    getCardInfo() {
+        return fetch(`${this.url}/cards`, {
+            headers: this.headers
+        })
+            .then(handleResponse)
+    }
+    
+
+    saveUserInfo(data) {
+        return fetch(`${this.url}/users/me`, {
             method: 'PATCH',
             headers: {
-                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79', //this.headers у меня содержит только токен, поэтому приходитя прописывать Content-type, в getInfo у меня стоит this.headers, тк ему не нужен ContentType
+                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -27,7 +36,7 @@ export default class Api {
     }
 
     setAvatar(data) {
-        return fetch(`${this.url}/avatar`, {
+        return fetch(`${this.url}/users/me/avatar`, {
             method: 'PATCH',
             headers: {
                 authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79',
@@ -41,7 +50,7 @@ export default class Api {
     }
 
     createNewCard(data) {
-        return fetch(this.url, {
+        return fetch(`${this.url}/cards`, {
             method: 'POST',
             headers: this.headers,
             body: JSON.stringify({
@@ -53,7 +62,7 @@ export default class Api {
     }
 
     deleteCard(cardId) {
-        return fetch(`${this.url}/${cardId}`, {
+        return fetch(`${this.url}/cards/${cardId}`, {
             method: 'DELETE',
             headers: this.headers
         })
@@ -61,7 +70,7 @@ export default class Api {
     }
 
     putLike(cardId) {
-        return fetch(`${this.url}/${cardId}/likes`, {
+        return fetch(`${this.url}/cards/${cardId}/likes`, {
             method: 'PUT',
             headers: this.headers
         })
@@ -69,7 +78,7 @@ export default class Api {
     }
 
     deleteLike(cardId) {
-        return fetch(`${this.url}/${cardId}/likes`, {
+        return fetch(`${this.url}/cards/${cardId}/likes`, {
             method: 'DELETE',
             headers: this.headers
         })

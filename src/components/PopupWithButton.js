@@ -19,7 +19,6 @@ export default class PopupWithButton extends Popup {
     setEventListeners() {
         super.setEventListeners();
         this._popup.querySelector('.popup__delete-card-button').addEventListener('click', () => {
-            this.close();
             this.delete();
         });
     }
