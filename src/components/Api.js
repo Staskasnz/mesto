@@ -23,10 +23,7 @@ export default class Api {
     saveUserInfo(data) {
         return fetch(`${this.url}/users/me`, {
             method: 'PATCH',
-            headers: {
-                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79',
-                'Content-Type': 'application/json'
-            },
+            headers: this.headers,
             body: JSON.stringify({
                 name: data.name,
                 about: data.vocation
@@ -38,10 +35,7 @@ export default class Api {
     setAvatar(data) {
         return fetch(`${this.url}/users/me/avatar`, {
             method: 'PATCH',
-            headers: {
-                authorization: 'dacb1343-5ee5-4c35-990d-5bf7b2f7cc79',
-                'Content-Type': 'application/json'
-            },
+            headers: this.headers,
             body: JSON.stringify({
                 avatar: data.avatar
             })
